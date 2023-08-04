@@ -58,7 +58,7 @@ const COLLECTION = {
 }
 
 function useGetSettings(chatbot_id) {
-  const { data: chatbot } = useGet(COLLECTION.CHATBOT, { _id: chatbot_id }, false, chatbot_id?.length !== 24);
+  const { data: chatbot } = useGet(COLLECTION.CHATBOT, { _id: chatbot_id }, false, !chatbot_id || chatbot_id.length !== 24);
   return chatbot?.settings;
 }
 
@@ -621,3 +621,5 @@ const Chat = () => {
 // export default Chat
 ReactDOM.createRoot(document.getElementById('app')).render(<Chat />);
 document.getElementById('app').style.zIndex = 99999;
+
+alert("Hello!");
