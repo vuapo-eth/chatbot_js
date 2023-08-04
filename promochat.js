@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState, createContext } from "react"
+// import { useContext, useEffect, useRef, useState, createContext } from "react"
 
 const DEFAULT_CHATBOT_SETTINGS = {
   name: 'Chatbot',
@@ -94,48 +94,48 @@ function display_error(error) {
 const BODY_REQUESTS = ['POST', 'PUT'];
 
 async function query_api(path, data, options) {
-    const api_path = process.env.NEXT_PUBLIC_API_PATH;
+  const api_path = process.env.NEXT_PUBLIC_API_PATH;
 
-    const method = options?.method || 'POST';
+  const method = options?.method || 'POST';
 
-    return await fetch(
-        api_path +
-        (path.startsWith('/') ? path.substring(1) : path) +
-        (!BODY_REQUESTS.includes(method) && data
-            ? (path.includes('?') ? '&' : '?') + 'body=' + encodeURIComponent(JSON.stringify(data))
-            : ''),
-        {
-            method,
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-                //   Authorization: "Bearer " + token,
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            body: BODY_REQUESTS.includes(method) ? JSON.stringify(data) : undefined
-        }
-    ).then(async (response) => {
-        const text = await response.text();
-        if (response.status === 404) {
-            throw new Error("Not found: " + path)
-        }
-        try {
-            var json = JSON.parse(text)
+  return await fetch(
+    api_path +
+    (path.startsWith('/') ? path.substring(1) : path) +
+    (!BODY_REQUESTS.includes(method) && data
+      ? (path.includes('?') ? '&' : '?') + 'body=' + encodeURIComponent(JSON.stringify(data))
+      : ''),
+    {
+      method,
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+        //   Authorization: "Bearer " + token,
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: BODY_REQUESTS.includes(method) ? JSON.stringify(data) : undefined
+    }
+  ).then(async (response) => {
+    const text = await response.text();
+    if (response.status === 404) {
+      throw new Error("Not found: " + path)
+    }
+    try {
+      var json = JSON.parse(text)
 
-            if (!response.ok) {
-                throw new Error(json.error)
-            } else {
-                return json.data
-            }
-        } catch (error) {
-            console.log(error);
-            console.log("RESPONSE: ", text)
-            throw error
-        }
-    });
+      if (!response.ok) {
+        throw new Error(json.error)
+      } else {
+        return json.data
+      }
+    } catch (error) {
+      console.log(error);
+      console.log("RESPONSE: ", text)
+      throw error
+    }
+  });
 }
 
 
@@ -501,11 +501,11 @@ function useSound(url) {
   return [playing, toggle];
 }
 
-const Chat = ({
-  id,
-  is_always_open = false,
-  is_never_fullscreen = false,
-}) => {
+const Chat = () => {
+  const is_always_open = false;
+  const is_never_fullscreen = false;
+  const id = "6473ec4f3f5080c02f1994c0"
+
   const [is_responding, set_is_responding] = useState(false);
   const [is_open, set_is_open] = useState(is_always_open);
   const [messages, set_messages] = useState([]);
@@ -618,4 +618,6 @@ const Chat = ({
   );
 };
 
-export default Chat
+// export default Chat
+ReactDOM.createRoot(document.getElementById('app')).render(<Chat />);
+document.getElementById('app').style.zIndex = 99999;
