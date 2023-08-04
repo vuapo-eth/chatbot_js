@@ -93,10 +93,10 @@ function display_error(error) {
 
 const BODY_REQUESTS = ['POST', 'PUT'];
 
-async function query_api(path, data, options) {
+async function query_api(path, data, options = { method: "POST" }) {
   const api_path = process.env.NEXT_PUBLIC_API_PATH;
 
-  const method = options?.method || 'POST';
+  const method = options.method || 'POST';
 
   return await fetch(
     api_path +
@@ -283,7 +283,7 @@ const MarketingMessage = () => {
     <div className="z-[50] px-3 py-3 text-black bg-black/5 m-3 rounded-md">
       <div className="w-[280px] text-[12px] pt-3 pl-3 inline-block align-top translate-y-[-8px]">
         <div className="text-[12px] mb-2">
-          {settings?.email_marketing_text?.split("\n").map((item, key) => (
+          {settings && (settings.email_marketing_text || "").split("\n").map((item, key) => (
             <span key={key}>
               {item}
               <br />
@@ -416,7 +416,7 @@ const Input = ({ submit }) => {
       />
       <Icon
         onClick={on_submit}
-        style={{ color: settings?.icon_color }}
+        style={{ color: settings ? settings.icon_color : "" }}
         className="cursor-pointer text-[30px] float-right absolute bottom-9 right-8"
       />
     </div>
@@ -464,8 +464,8 @@ const ChatWidget = ({ messages, submit }) => {
           onClick={() => set_is_collapsed(false)}
         >
           <Message
-            is_self={last_message?.is_self || false}
-            text={last_message?.text || "Hi how can I help you?"}
+            is_self={last_message ? last_message.is_self : false}
+            text={last_message ? last_message.text : "Hi how can I help you?"}
             chat_id={id}
             request_id={undefined}
           />
