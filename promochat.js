@@ -59,7 +59,7 @@ const COLLECTION = {
 
 function useGetSettings(chatbot_id) {
   const { data: chatbot } = useGet(COLLECTION.CHATBOT, { _id: chatbot_id }, false, !chatbot_id || chatbot_id.length !== 24);
-  return chatbot?.settings;
+  return chatbot.settings;
 }
 
 function useGet(collection, query, multiple, is_paused) {
