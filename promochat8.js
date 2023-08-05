@@ -146,34 +146,38 @@ export async function mongo_get(collection, query, multiple = true) {
 const Icon = () => {
   return <div></div>
 }
-
 const Header = ({ messages, is_collapsed, set_is_collapsed }) => {
   const { settings } = React.useContext(ChatContext)
 
   return (
     <div
-      style={{ backgroundColor: settings.icon_color }}
-      className={`z-[10] relative w-[420px] ${is_collapsed ? "h-[86px]" : "h-[120px]"
-        } translate-y-[-20px] m-[-10px] mb-[-20px] rounded-lg text-white shadow-xl`}
+      style={{
+        backgroundColor: settings.icon_color,
+        zIndex: 10,
+        position: 'relative',
+        width: '420px',
+        height: is_collapsed ? '86px' : '120px',
+        transform: 'translateY(-20px)',
+        margin: '-10px',
+        marginBottom: '-20px',
+        borderRadius: '0.5rem',
+        color: 'white',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)'
+      }}
     >
       <div
         onClick={() => set_is_collapsed(!is_collapsed)}
-        style={{ backgroundColor: settings.icon_color }}
-        className="w-[40px] h-[30px] mt-[-15px] rounded-lg float-right text-center text-[24px] cursor-pointer"
+        style={{ backgroundColor: settings.icon_color, width: '40px', height: '30px', marginTop: '-15px', borderRadius: '0.5rem', float: 'right', textAlign: 'center', fontSize: '24px', cursor: 'pointer' }}
       >
-        {is_collapsed ? (
-          <Icon className="mx-auto" />
-        ) : (
-          <Icon className="mx-auto" />
-        )}
+        <Icon className="mx-auto" />
       </div>
 
-      <div className="absolute top-[7px] left-0 right-0 font-bold text-center text-[22px]">
+      <div style={{ position: 'absolute', top: '7px', left: '0', right: '0', fontWeight: 'bold', textAlign: 'center', fontSize: '22px' }}>
         {is_collapsed ? "" : settings.promo_text}
       </div>
 
-      <div className="absolute top-[36px] left-0 right-0 text-center text-[16px]">
-        <a className="text-white underline" href={settings.call_to_action_url}>
+      <div style={{ position: 'absolute', top: '36px', left: '0', right: '0', textAlign: 'center', fontSize: '16px' }}>
+        <a style={{ color: 'white', textDecoration: 'underline' }} href={settings.call_to_action_url}>
           {is_collapsed ? "" : settings.call_to_action}
         </a>
       </div>
@@ -187,11 +191,12 @@ const Header = ({ messages, is_collapsed, set_is_collapsed }) => {
             .then(() => display_success("Email sent!"))
             .catch(display_error)
         }}
-        className="cursor-pointer text-[20px] float-right absolute bottom-7 right-3"
+        style={{ cursor: 'pointer', fontSize: '20px', float: 'right', position: 'absolute', bottom: '7px', right: '3px' }}
       />
     </div>
   )
 }
+
 
 const RatingBox = ({ chat_id, request_id }) => {
   const [current_rating, set_current_rating] = React.useState(0)
@@ -220,23 +225,31 @@ const RatingBox = ({ chat_id, request_id }) => {
     } else if (current_rating === -1 && !is_positive) {
       reset_rating()
     }
-  }
-
-  return (
-    <div className="text-black/50 text-[12px] italic mt-2 text-right">
+  } return (
+    <div style={{ color: 'rgba(0, 0, 0, 0.5)', fontSize: '12px', fontStyle: 'italic', marginTop: '8px', textAlign: 'right' }}>
       Was this helpful?
       <Icon
         onClick={() => on_rate_clicked(true)}
-        className={`cursor-pointer inline-block ml-2 text-[#0B4] ${current_rating === 1 ? "" : "opacity-50"
-          }`}
+        style={{
+          cursor: 'pointer',
+          display: 'inline-block',
+          marginLeft: '8px',
+          color: '#0B4',
+          opacity: current_rating === 1 ? 1 : 0.5
+        }}
       />
       <Icon
         onClick={() => on_rate_clicked(false)}
-        className={`cursor-pointer inline-block ml-2 text-[#B40] ${current_rating === -1 ? "" : "opacity-50"
-          }`}
+        style={{
+          cursor: 'pointer',
+          display: 'inline-block',
+          marginLeft: '8px',
+          color: '#B40',
+          opacity: current_rating === -1 ? 1 : 0.5
+        }}
       />
     </div>
-  )
+  );
 }
 
 const Message = ({ is_self, text, chat_id, request_id }) => {
@@ -248,14 +261,32 @@ const Message = ({ is_self, text, chat_id, request_id }) => {
         id={text.replace("[RECOMMENDATION:", "").replace("]", "")}
       />
     ) : (
-      <div
-        className={`z-[50] px-3 py-3 ${is_self ? "bg-[#EEE]" : ""} text-black`}
-      >
+      <div style={{
+        zIndex: 50,
+        padding: '12px',
+        backgroundColor: is_self ? '#EEE' : 'transparent',
+        color: 'black'
+      }}>
         <img
           src={is_self ? "/user.svg" : settings.icon_url}
-          className="bg-transparent w-[40px] h-[40px] bg-black inline-block align-top"
+          style={{
+            background: 'transparent',
+            width: '40px',
+            height: '40px',
+            backgroundColor: 'black',
+            display: 'inline-block',
+            verticalAlign: 'top'
+          }}
         />
-        <div className="w-[280px] text-[16px] pt-3 pl-3 inline-block align-top translate-y-[-8px]">
+        <div style={{
+          width: '280px',
+          fontSize: '16px',
+          paddingTop: '12px',
+          paddingLeft: '12px',
+          display: 'inline-block',
+          verticalAlign: 'top',
+          transform: 'translateY(-8px)'
+        }}>
           {text}
         </div>
         {request_id && !is_self ? (
@@ -263,8 +294,9 @@ const Message = ({ is_self, text, chat_id, request_id }) => {
         ) : null}
       </div>
     )
-  ) : null
+  ) : null;
 }
+
 
 const MarketingMessage = () => {
   const { settings, id } = React.useContext(ChatContext)
@@ -278,11 +310,25 @@ const MarketingMessage = () => {
       .catch(display_error)
       .then(() => set_is_subscribed(true))
   }
-
   return is_subscribed ? null : (
-    <div className="z-[50] px-3 py-3 text-black bg-black/5 m-3 rounded-md">
-      <div className="w-[280px] text-[12px] pt-3 pl-3 inline-block align-top translate-y-[-8px]">
-        <div className="text-[12px] mb-2">
+    <div style={{
+      zIndex: 50,
+      padding: '12px',
+      color: 'black',
+      backgroundColor: 'rgba(0, 0, 0, 0.2)', // This is an approximation of `bg-black/5`
+      margin: '12px',
+      borderRadius: '0.375rem' // This is a typical rounded-md radius in pixels
+    }}>
+      <div style={{
+        width: '280px',
+        fontSize: '12px',
+        paddingTop: '12px',
+        paddingLeft: '12px',
+        display: 'inline-block',
+        verticalAlign: 'top',
+        transform: 'translateY(-8px)'
+      }}>
+        <div style={{ fontSize: '12px', marginBottom: '8px' }}>
           {settings && (settings.email_marketing_text || "").split("\n").map((item, key) => (
             <span key={key}>
               {item}
@@ -297,16 +343,20 @@ const MarketingMessage = () => {
           onChange={e => set_email(e.target.value)}
         />
         <button
-          style={{ maxWidth: "50px", display: "inline-block" }}
+          style={{
+            maxWidth: '50px',
+            display: 'inline-block',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // This is a rough approximation for the `shadow` class
+            backgroundColor: '#34D399' // This is an approximation of the `success` color from some libraries. Adjust if needed.
+          }}
           onClick={sign_up}
-          shadow
-          color={"success"}
         >
           Sign up!
         </button>
       </div>
     </div>
   )
+
 }
 
 const RectangleWithEllipse = () => (
@@ -315,39 +365,63 @@ const RectangleWithEllipse = () => (
     <div className="rectangle" />
   </div>
 )
-
 const ProductRecommendation = ({ id }) => {
   const { settings } = React.useContext(ChatContext)
   const { data: product } = useGet(COLLECTION.PRODUCT, { _id: id }, false, !id)
 
   return product ? (
-    <div className={`z-[50] px-3 py-3 bg-[#FFF]`}>
-      <Link href={product.shop_url + "/" + product.slug} className="text-black">
+    <div style={{
+      zIndex: 50,
+      padding: '12px',
+      backgroundColor: '#FFF'
+    }}>
+      <Link href={product.shop_url + "/" + product.slug} style={{ color: 'black' }}>
         <img
           src={settings.icon_url}
-          className="bg-transparent w-[40px] h-[40px] bg-black inline-block align-top"
+          style={{
+            background: 'transparent',
+            width: '40px',
+            height: '40px',
+            backgroundColor: 'black',
+            display: 'inline-block',
+            verticalAlign: 'top'
+          }}
         />
-        <div className="w-[280px] text-[16px] pt-3 pl-3 inline-block align-top translate-y-[-8px]">
-          <div className="mb-3">
+        <div style={{
+          width: '280px',
+          fontSize: '16px',
+          paddingTop: '12px',
+          paddingLeft: '12px',
+          display: 'inline-block',
+          verticalAlign: 'top',
+          transform: 'translateY(-8px)'
+        }}>
+          <div style={{ marginBottom: '12px' }}>
             Could <b>{product.name}</b> fit your needs?
           </div>
           <img
             src={product.images[0]}
-            className="mx-auto rounded-md shadow-md max-h-[200px]"
+            style={{
+              margin: 'auto',
+              borderRadius: '0.375rem', // rounded-md in pixels
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Approximation of shadow-md
+              maxHeight: '200px'
+            }}
           />
-          <div className="mt-3">{product.description}</div>
-          <div className="mt-3">
+          <div style={{ marginTop: '12px' }}>{product.description}</div>
+          <div style={{ marginTop: '12px' }}>
             <button>Starts at ${(product.min_price / 100).toFixed(2)}</button>
           </div>
         </div>
       </Link>
     </div>
   ) : (
-    <div className="text-center my-10">
+    <div style={{ textAlign: 'center', margin: '40px 0' }}>
       <Loading />
     </div>
   )
 }
+
 
 const Messages = ({ is_collapsed, messages }) => {
   const ref_message_container = React.useRef(null)
@@ -400,9 +474,16 @@ const Input = ({ submit }) => {
       set_text("")
     }
   }
-
   return (
-    <div className="p-3 absolute bottom-0 right-0 left-0 z-[15] bg-white z-[90]">
+    <div style={{
+      padding: '12px',
+      position: 'absolute',
+      bottom: '0',
+      right: '0',
+      left: '0',
+      zIndex: 90,
+      backgroundColor: 'white'
+    }}>
       <textarea
         value={text}
         onChange={e => set_text(e.target.value)}
@@ -411,16 +492,34 @@ const Input = ({ submit }) => {
             on_submit()
           }
         }}
-        className="no-scrollbar text-black bg-[#EEE] text-[12px] h-[60px] w-full p-3 overflow-y-auto overflow-x-none resize-none"
+        style={{
+          scrollbarWidth: 'none', // Equivalent to no-scrollbar
+          color: 'black',
+          backgroundColor: '#EEE',
+          fontSize: '12px',
+          height: '60px',
+          width: '100%',
+          padding: '12px',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          resize: 'none'
+        }}
         placeholder="Type your message..."
       />
       <Icon
         onClick={on_submit}
-        style={{ color: settings ? settings.icon_color : "" }}
-        className="cursor-pointer text-[30px] float-right absolute bottom-9 right-8"
+        style={{
+          color: settings ? settings.icon_color : "",
+          fontSize: '30px',
+          position: 'absolute',
+          bottom: '9px',
+          right: '8px',
+          cursor: 'pointer'
+        }}
       />
     </div>
   )
+
 }
 
 const ChatWidget = ({ messages, submit }) => {
