@@ -268,7 +268,7 @@ const Message = ({ is_self, text, chat_id, request_id }) => {
         color: 'black'
       }}>
         <img
-          src={is_self ? "/user.svg" : settings.icon_url}
+          src={"https://app.promochat.ai/" + (is_self ? "user.svg" : settings.icon_url)}
           style={{
             background: 'transparent',
             width: '40px',
@@ -441,7 +441,14 @@ const Messages = ({ is_collapsed, messages }) => {
       <RectangleWithEllipse />
       <div
         ref={ref_message_container}
-        className="absolute w-full z-[50] h-[calc(100%-150px)] pb-[30px] overflow-y-scroll"
+        style={{
+          position: 'absolute',
+          width: '100%',
+          zIndex: 50,
+          height: 'calc(100% - 150px)',
+          paddingBottom: '30px',
+          overflowY: 'scroll'
+        }}
       >
         {messages.map((message, index) => {
           return (
@@ -705,7 +712,12 @@ const Chat = () => {
   };
 
   return (
-    <div className="fixed bottom-5 right-5">
+    <div style={{
+      position: 'fixed',
+      bottom: '5px',
+      right: '5px'
+    }}>
+
       <ChatContext.Provider value={chat_context}>
         <ChatWidget
           messages={messages}
