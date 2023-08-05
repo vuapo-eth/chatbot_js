@@ -514,7 +514,7 @@ const Chat = () => {
   const [is_fullscreen, set_fullscreen] = React.useState(false);
   // const [current_message, set_current_message] = React.useState('');
   const [last_interaction_timestamp, set_last_interaction_timestamp] = React.useState(current_unix() + 999999999999);
-  const [play_sound] = useSound("/pop.wav")
+  const [play_sound] = useSound("https://app.promochat.ai/pop.wav")
 
   async function fetchAndPrintStream(chat_id) {
     const data = await query_api("chat/respond", { messages, id, chat_id })
@@ -621,5 +621,3 @@ const Chat = () => {
 // export default Chat
 ReactDOM.createRoot(document.getElementById('app')).render(<Chat />);
 document.getElementById('app').style.zIndex = 99999;
-
-alert("Hello!");
