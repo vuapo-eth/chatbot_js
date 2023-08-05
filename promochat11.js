@@ -1,4 +1,4 @@
-import React from "react"
+// import React from "react"
 
 const DEFAULT_CHATBOT_SETTINGS = {
   name: 'Chatbot',
@@ -752,6 +752,6 @@ const Chat = () => {
   );
 };
 
-export default Chat
-// ReactDOM.createRoot(document.getElementById('app')).render(<Chat />);
-// document.getElementById('app').style.zIndex = 99999;
+// export default Chat
+ReactDOM.createRoot(document.getElementById('app')).render(<Chat />);
+document.getElementById('app').style.zIndex = 99999;
