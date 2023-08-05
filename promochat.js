@@ -363,7 +363,7 @@ const Messages = ({ is_collapsed, messages }) => {
   useEffect(scroll_to_newest_message, [messages])
 
   return is_collapsed ? null : (
-    <>
+    <div>
       <RectangleWithEllipse />
       <div
         ref={ref_message_container}
@@ -386,7 +386,7 @@ const Messages = ({ is_collapsed, messages }) => {
           )
         })}
       </div>
-    </>
+    </div>
   )
 }
 
