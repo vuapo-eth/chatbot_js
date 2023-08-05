@@ -77,7 +77,7 @@ function useGet(collection, query, multiple, is_paused) {
     }
   }
 
-  React.React.useEffect(fetch_data, [is_paused, reload_index]);
+  React.useEffect(fetch_data, [is_paused, reload_index]);
 
   return { data, reload, is_loading, is_paused };
 }
