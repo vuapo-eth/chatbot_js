@@ -1,4 +1,4 @@
-// import { React.useContext, React.useEffect, React.useRef, React.useState, createContext } from "react"
+import React from "react"
 
 const DEFAULT_CHATBOT_SETTINGS = {
   name: 'Chatbot',
@@ -169,7 +169,7 @@ const Header = ({ messages, is_collapsed, set_is_collapsed }) => {
         onClick={() => set_is_collapsed(!is_collapsed)}
         style={{ backgroundColor: settings.icon_color, width: '40px', height: '30px', marginTop: '-15px', borderRadius: '0.5rem', float: 'right', textAlign: 'center', fontSize: '24px', cursor: 'pointer' }}
       >
-        <Icon className="mx-auto" />
+        <Icon style={{ margin: "0 auto" }} />
       </div>
 
       <div style={{ position: 'absolute', top: '7px', left: '0', right: '0', fontWeight: 'bold', textAlign: 'center', fontSize: '22px' }}>
@@ -360,9 +360,9 @@ const MarketingMessage = () => {
 }
 
 const RectangleWithEllipse = () => (
-  <div className="">
-    <div className="ellipse" />
-    <div className="rectangle" />
+  <div>
+    <div class="ellipse" />
+    <div class="rectangle" />
   </div>
 )
 const ProductRecommendation = ({ id }) => {
@@ -541,7 +541,10 @@ const ChatWidget = ({ messages, submit }) => {
   if (is_collapsed && settings.icon_is_simple) {
     return (
       <div
-        className="w-[110px] cursor-pointer"
+        style={{
+          width: "110px",
+          "cursor": "pointer"
+        }}
         onClick={() => set_is_collapsed(false)}
       >
         <Icon fill2={settings.icon_color} />
@@ -550,10 +553,20 @@ const ChatWidget = ({ messages, submit }) => {
   }
 
   return (
-    <div
-      className={`z-[9999] bg-white font-roboto w-[400px] shadow-xl mx-auto duration-500 absolute right-0 bottom-0 ${is_collapsed ? "h-[56px]" : "h-[500px]"
-        }`}
-    >
+    <div style={{
+      zIndex: 9999,
+      backgroundColor: 'white',
+      fontFamily: 'roboto',
+      width: '400px',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Approximation of shadow-xl
+      margin: 'auto',
+      transitionDuration: '500ms',
+      position: 'absolute',
+      right: '0',
+      bottom: '0',
+      height: is_collapsed ? '56px' : '500px'
+    }}>
+
       <Header
         messages={messages}
         is_collapsed={is_collapsed}
@@ -566,7 +579,17 @@ const ChatWidget = ({ messages, submit }) => {
       />
       {is_collapsed ? (
         <div
-          className="cursor-pointer max-h-[78px] overflow-hidden absolute bottom-0 right-0 left-0 bg-white z-[20]"
+          style={{
+            cursor: 'pointer',
+            maxHeight: '78px',
+            overflow: 'hidden',
+            position: 'absolute',
+            bottom: '0',
+            right: '0',
+            left: '0',
+            backgroundColor: 'white',
+            zIndex: 20
+          }}
           onClick={() => set_is_collapsed(false)}
         >
           <Message
@@ -729,6 +752,6 @@ const Chat = () => {
   );
 };
 
-// export default Chat
-ReactDOM.createRoot(document.getElementById('app')).render(<Chat />);
-document.getElementById('app').style.zIndex = 99999;
+export default Chat
+// ReactDOM.createRoot(document.getElementById('app')).render(<Chat />);
+// document.getElementById('app').style.zIndex = 99999;
