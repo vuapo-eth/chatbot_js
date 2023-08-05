@@ -1,4 +1,4 @@
-// import { useContext, useEffect, useRef, useState, createContext } from "react"
+// import { React.useContext, React.useEffect, React.useRef, React.useState, createContext } from "react"
 
 const DEFAULT_CHATBOT_SETTINGS = {
   name: 'Chatbot',
@@ -48,7 +48,7 @@ const default_value = {
   id: "",
 };
 
-const ChatContext = createContext(default_value);
+const ChatContext = React.createContext(default_value);
 
 const COLLECTION = {
   CHATBOT: 'chatbot',
@@ -63,10 +63,10 @@ function useGetSettings(chatbot_id) {
 }
 
 function useGet(collection, query, multiple, is_paused) {
-  const [data, set_data] = useState(undefined);
-  const [reload_index, set_reload_index] = useState(0);
+  const [data, set_data] = React.useState(undefined);
+  const [reload_index, set_reload_index] = React.useState(0);
   const reload = () => set_reload_index(reload_index + 1);
-  const [is_loading, set_is_loading] = useState(false);
+  const [is_loading, set_is_loading] = React.useState(false);
 
   function fetch_data() {
     if (!is_paused) {
@@ -77,7 +77,7 @@ function useGet(collection, query, multiple, is_paused) {
     }
   }
 
-  useEffect(fetch_data, [is_paused, reload_index]);
+  React.React.useEffect(fetch_data, [is_paused, reload_index]);
 
   return { data, reload, is_loading, is_paused };
 }
@@ -148,7 +148,7 @@ const Icon = () => {
 }
 
 const Header = ({ messages, is_collapsed, set_is_collapsed }) => {
-  const { settings } = useContext(ChatContext)
+  const { settings } = React.useContext(ChatContext)
 
   return (
     <div
@@ -194,7 +194,7 @@ const Header = ({ messages, is_collapsed, set_is_collapsed }) => {
 }
 
 const RatingBox = ({ chat_id, request_id }) => {
-  const [current_rating, set_current_rating] = useState(0)
+  const [current_rating, set_current_rating] = React.useState(0)
 
   function rate(is_positive) {
     mongo_post(COLLECTION.RATING, [{ is_positive, chat: chat_id, request_id }])
@@ -240,7 +240,7 @@ const RatingBox = ({ chat_id, request_id }) => {
 }
 
 const Message = ({ is_self, text, chat_id, request_id }) => {
-  const { settings } = useContext(ChatContext)
+  const { settings } = React.useContext(ChatContext)
 
   return text ? (
     text.match(/^\[RECOMMENDATION:[0-9a-f]{24}\]$/) ? (
@@ -267,10 +267,10 @@ const Message = ({ is_self, text, chat_id, request_id }) => {
 }
 
 const MarketingMessage = () => {
-  const { settings, id } = useContext(ChatContext)
+  const { settings, id } = React.useContext(ChatContext)
 
-  const [email, set_email] = useState("")
-  const [is_subscribed, set_is_subscribed] = useState(false)
+  const [email, set_email] = React.useState("")
+  const [is_subscribed, set_is_subscribed] = React.useState(false)
 
   function sign_up() {
     mongo_post(COLLECTION.SUBSCRIBER, [{ email, chatbot: id }])
@@ -317,7 +317,7 @@ const RectangleWithEllipse = () => (
 )
 
 const ProductRecommendation = ({ id }) => {
-  const { settings } = useContext(ChatContext)
+  const { settings } = React.useContext(ChatContext)
   const { data: product } = useGet(COLLECTION.PRODUCT, { _id: id }, false, !id)
 
   return product ? (
@@ -350,8 +350,8 @@ const ProductRecommendation = ({ id }) => {
 }
 
 const Messages = ({ is_collapsed, messages }) => {
-  const ref_message_container = useRef(null)
-  const { settings, id } = useContext(ChatContext)
+  const ref_message_container = React.useRef(null)
+  const { settings, id } = React.useContext(ChatContext)
 
   function scroll_to_newest_message() {
     const message_container = ref_message_container.current
@@ -360,7 +360,7 @@ const Messages = ({ is_collapsed, messages }) => {
     }
   }
 
-  useEffect(scroll_to_newest_message, [messages])
+  React.useEffect(scroll_to_newest_message, [messages])
 
   return is_collapsed ? null : (
     <div>
@@ -391,8 +391,8 @@ const Messages = ({ is_collapsed, messages }) => {
 }
 
 const Input = ({ submit }) => {
-  const [text, set_text] = useState("")
-  const { settings } = useContext(ChatContext)
+  const [text, set_text] = React.useState("")
+  const { settings } = React.useContext(ChatContext)
 
   function on_submit() {
     if (text.trim().length > 0) {
@@ -424,13 +424,13 @@ const Input = ({ submit }) => {
 }
 
 const ChatWidget = ({ messages, submit }) => {
-  const { is_always_open, id } = useContext(ChatContext)
-  const [is_collapsed, set_is_collapsed] = useState(
+  const { is_always_open, id } = React.useContext(ChatContext)
+  const [is_collapsed, set_is_collapsed] = React.useState(
     is_always_open ? false : true
   )
   const last_message =
     messages.length > 0 ? messages[messages.length - 1] : null
-  const { settings } = useContext(ChatContext)
+  const { settings } = React.useContext(ChatContext)
 
   if (is_collapsed && settings.icon_is_simple) {
     return (
@@ -482,16 +482,16 @@ function pick_random(array) {
 }
 
 function useSound(url) {
-  const [audio] = useState(typeof Audio !== "undefined" && new Audio(url));
-  const [playing, setPlaying] = useState(false);
+  const [audio] = React.useState(typeof Audio !== "undefined" && new Audio(url));
+  const [playing, setPlaying] = React.useState(false);
 
   const toggle = () => setPlaying(!playing);
 
-  useEffect(() => {
+  React.useEffect(() => {
     playing ? audio.play() : audio.pause();
   }, [playing]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     audio.addEventListener("ended", () => setPlaying(false));
     return () => {
       audio.removeEventListener("ended", () => setPlaying(false));
@@ -506,14 +506,14 @@ const Chat = () => {
   const is_never_fullscreen = false;
   const id = "6473ec4f3f5080c02f1994c0"
 
-  const [is_responding, set_is_responding] = useState(false);
-  const [is_open, set_is_open] = useState(is_always_open);
-  const [messages, set_messages] = useState([]);
+  const [is_responding, set_is_responding] = React.useState(false);
+  const [is_open, set_is_open] = React.useState(is_always_open);
+  const [messages, set_messages] = React.useState([]);
   const settings = useGetSettings(id);
-  const [chat_id, set_chat_id] = useState(undefined);
-  const [is_fullscreen, set_fullscreen] = useState(false);
-  // const [current_message, set_current_message] = useState('');
-  const [last_interaction_timestamp, set_last_interaction_timestamp] = useState(current_unix() + 999999999999);
+  const [chat_id, set_chat_id] = React.useState(undefined);
+  const [is_fullscreen, set_fullscreen] = React.useState(false);
+  // const [current_message, set_current_message] = React.useState('');
+  const [last_interaction_timestamp, set_last_interaction_timestamp] = React.useState(current_unix() + 999999999999);
   const [play_sound] = useSound("/pop.wav")
 
   async function fetchAndPrintStream(chat_id) {
@@ -523,7 +523,7 @@ const Chat = () => {
     play_sound();
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     const interval = setInterval(() => {
       if (current_unix() - last_interaction_timestamp > 60) {
         add_message('', true);
@@ -563,7 +563,7 @@ const Chat = () => {
     scroll_to_bottom_of_chat_history();
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (messages.length > 0 && messages[messages.length - 1].is_self) {
       if (Math.ceil(messages.length) / 2 === 3) {
         if (!is_never_fullscreen) {
@@ -576,7 +576,7 @@ const Chat = () => {
     }
   }, [messages]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (settings && messages.length === 0) {
       add_message(pick_random(settings.first_message || []), false);
     }
