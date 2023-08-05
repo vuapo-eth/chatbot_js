@@ -94,7 +94,7 @@ function display_error(error) {
 const BODY_REQUESTS = ['POST', 'PUT'];
 
 async function query_api(path, data, options = { method: "POST" }) {
-  const api_path = process.env.NEXT_PUBLIC_API_PATH;
+  const api_path = "https://app.promochat.ai/api/";
 
   const method = options.method || 'POST';
 
