@@ -737,8 +737,8 @@ const Chat = () => {
   return (
     <div style={{
       position: 'fixed',
-      bottom: '5px',
-      right: '5px'
+      bottom: '30px',
+      right: '30px'
     }}>
 
       <ChatContext.Provider value={chat_context}>
@@ -754,6 +754,5 @@ const Chat = () => {
 
 // export default Chat
 
-var exports = {};
 ReactDOM.createRoot(document.getElementById('promochat')).render(<Chat />);
 document.getElementById('promochat').style.zIndex = 99999;
