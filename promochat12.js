@@ -753,5 +753,7 @@ const Chat = () => {
 };
 
 // export default Chat
-ReactDOM.createRoot(document.getElementById('app')).render(<Chat />);
-document.getElementById('app').style.zIndex = 99999;
+
+var exports = {};
+ReactDOM.createRoot(document.getElementById('promochat')).render(<Chat />);
+document.getElementById('promochat').style.zIndex = 99999;
