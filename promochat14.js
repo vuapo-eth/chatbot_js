@@ -273,7 +273,7 @@ const Message = ({ is_self, text, chat_id, request_id }) => {
             background: 'transparent',
             width: '40px',
             height: '40px',
-            backgroundColor: 'black',
+            backgroundColor: 'transparent',
             display: 'inline-block',
             verticalAlign: 'top'
           }}
@@ -315,12 +315,11 @@ const MarketingMessage = () => {
       zIndex: 50,
       padding: '12px',
       color: 'black',
-      backgroundColor: 'rgba(0, 0, 0, 0.2)', // This is an approximation of `bg-black/5`
+      backgroundColor: 'rgba(0, 0, 0, 0.05)', // This is an approximation of `bg-black/5`
       margin: '12px',
       borderRadius: '0.375rem' // This is a typical rounded-md radius in pixels
     }}>
       <div style={{
-        width: '280px',
         fontSize: '12px',
         paddingTop: '12px',
         paddingLeft: '12px',
@@ -340,14 +339,28 @@ const MarketingMessage = () => {
           type="email"
           placeholder="Your email"
           value={email}
+          style={{
+            padding: "9px 20px",
+            marginRight: "5px",
+            fontSize: "16px",
+            borderRadius: "5px",
+            backgroundColor: "#FFF",
+            border: "1px solid #DDD",
+            display: "inline-block",
+          }}
           onChange={e => set_email(e.target.value)}
         />
         <button
           style={{
-            maxWidth: '50px',
+            maxWidth: '130px',
             display: 'inline-block',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // This is a rough approximation for the `shadow` class
-            backgroundColor: '#34D399' // This is an approximation of the `success` color from some libraries. Adjust if needed.
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            backgroundColor: '#21A279',
+            color: "#FFF",
+            padding: "9px 20px",
+            fontSize: "16px",
+            borderRadius: "5px",
+            display: "inline-block",
           }}
           onClick={sign_up}
         >
@@ -633,7 +646,7 @@ function useSound(url) {
 const Chat = () => {
   const is_always_open = false;
   const is_never_fullscreen = false;
-  const id = "6473ec4f3f5080c02f1994c0"
+  const id = window.id;
 
   const [is_responding, set_is_responding] = React.useState(false);
   const [is_open, set_is_open] = React.useState(is_always_open);
@@ -643,7 +656,7 @@ const Chat = () => {
   const [is_fullscreen, set_fullscreen] = React.useState(false);
   // const [current_message, set_current_message] = React.useState('');
   const [last_interaction_timestamp, set_last_interaction_timestamp] = React.useState(current_unix() + 999999999999);
-  const [play_sound] = useSound("https://app.promochat.ai/pop.wav")
+  const [playing, play_sound] = useSound("https://app.promochat.ai/pop.wav")
 
   async function fetchAndPrintStream(chat_id) {
     const data = await query_api("chat/respond", { messages, id, chat_id })
