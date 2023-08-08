@@ -198,11 +198,13 @@ const Header = ({ messages, is_collapsed, set_is_collapsed }) => {
 }
 
 
-const RatingBox = ({ chat_id, request_id }) => {
-  const [current_rating, set_current_rating] = React.useState(0)
+const RatingBox = ({ message_id }) => {
+
+  const { chat_id, chatbot_id } = React.useContext(ChatContext);
+  const [current_rating, set_current_rating] = React.useState(0);
 
   function rate(is_positive) {
-    mongo_post(COLLECTION.RATING, [{ is_positive, chat: chat_id, request_id }])
+    mongo_post(COLLECTION.RATING, [{ chatbot: chatbot_id, is_positive, chat: chat_id, message_id }])
       .then(() => {
         set_current_rating(is_positive ? 1 : -1)
       })
@@ -210,7 +212,7 @@ const RatingBox = ({ chat_id, request_id }) => {
   }
 
   function reset_rating() {
-    mongo_delete(COLLECTION.RATING, { chat: chat_id, request_id })
+    mongo_delete(COLLECTION.RATING, { chat: chat_id, message_id })
       .then(() => {
         set_current_rating(0)
       })
@@ -252,7 +254,7 @@ const RatingBox = ({ chat_id, request_id }) => {
   );
 }
 
-const Message = ({ is_self, text, chat_id, request_id }) => {
+const Message = ({ is_self, text, _id }) => {
   const { settings } = React.useContext(ChatContext)
 
   return text ? (
@@ -289,8 +291,8 @@ const Message = ({ is_self, text, chat_id, request_id }) => {
         }}>
           {text}
         </div>
-        {request_id && !is_self ? (
-          <RatingBox chat_id={chat_id} request_id={request_id} />
+        {_id && !is_self ? (
+          <RatingBox message_id={_id} />
         ) : null}
       </div>
     )
@@ -299,7 +301,7 @@ const Message = ({ is_self, text, chat_id, request_id }) => {
 
 
 const MarketingMessage = () => {
-  const { settings, id } = React.useContext(ChatContext)
+  const { settings, chatbot_id } = useContext(ChatContext);
 
   const [email, set_email] = React.useState("")
   const [is_subscribed, set_is_subscribed] = React.useState(false)
@@ -470,8 +472,7 @@ const Messages = ({ is_collapsed, messages }) => {
                 key={index}
                 is_self={message.is_self}
                 text={message.text}
-                chat_id={id}
-                request_id={message.request_id}
+                _id={message._id}
               />
               {settings.is_email_marketing_enabled && index % 3 === 0 ? (
                 <MarketingMessage />
@@ -543,7 +544,7 @@ const Input = ({ submit }) => {
 }
 
 const ChatWidget = ({ messages, submit }) => {
-  const { is_always_open, id } = React.useContext(ChatContext)
+  const { is_always_open } = React.useContext(ChatContext)
   const [is_collapsed, set_is_collapsed] = React.useState(
     is_always_open ? false : true
   )
@@ -608,8 +609,7 @@ const ChatWidget = ({ messages, submit }) => {
           <Message
             is_self={last_message ? last_message.is_self : false}
             text={last_message ? last_message.text : "Hi how can I help you?"}
-            chat_id={id}
-            request_id={undefined}
+            _id={undefined}
           />
         </div>
       ) : (
@@ -661,7 +661,7 @@ const Chat = () => {
   async function fetchAndPrintStream(chat_id) {
     const data = await query_api("chat/respond", { messages, id, chat_id })
     set_last_interaction_timestamp(current_unix() + (messages[messages.length - 1].text === '' ? 9999999999999 : 0));
-    add_message(data.text, false, data.request_id);
+    add_message(data.text, false, data.message_id);
     play_sound();
   }
 
@@ -693,13 +693,13 @@ const Chat = () => {
     }
   }
 
-  function add_message(text, is_self, request_id) {
+  function add_message(text, is_self, _id) {
     set_messages((messages) => [
       ...messages,
       {
         text,
         is_self,
-        request_id
+        _id
       }
     ]);
     scroll_to_bottom_of_chat_history();
@@ -744,7 +744,8 @@ const Chat = () => {
     last_interaction_timestamp,
     set_last_interaction_timestamp,
     is_always_open,
-    id
+    chatbot_id: id,
+    chat_id
   };
 
   return (
