@@ -146,6 +146,38 @@ export async function mongo_get(collection, query, multiple = true) {
 const Icon = () => {
   return <div></div>
 }
+
+const AskAI = ({ fill1 = '#FFFFFF', fill2 = '#000000' }) => (
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    viewBox="0 0 88.08 75.6" style={{ enableBackground: "new 0 0 88.08 75.6", filter: "drop-shadow(3px 3px 20px rgba(0, 0, 0, 0.7))" }} xmlSpace="preserve">
+    <filter filterUnits="objectBoundingBox" height="130%" id="AI_Shadow_2" width="140%" x="-15%" y="-15%">
+      <feGaussianBlur in="SourceAlpha" result="blur" stdDeviation="6"></feGaussianBlur>
+      <feOffset dx="" dy="2" in="blur" result="offsetBlurredAlpha"></feOffset>
+      <feMerge>
+        <feMergeNode in="offsetBlurredAlpha"></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+    <path fill={fill1} d="M70.96,10.8H17.22c-2.55,0-4.63,2.08-4.63,4.65v32.2c0,2.57,2.07,4.65,4.63,4.65h22.03l-5.07,12.48L48.73,52.3
+      h22.24c2.55,0,4.63-2.08,4.63-4.65v-32.2C75.59,12.88,73.52,10.8,70.96,10.8z"/>
+    <g>
+      <g>
+        <path fill={fill2} d="M20.43,18.52l-4.61,8.53h1.41l1.03-1.99h3.01l0.23,1.99h1.42l-1.17-8.53H20.43z M18.88,23.87l1.83-3.53l0.04,0.01
+          l0.4,3.53H18.88z M28,18.4c-0.79,0-1.45,0.19-2,0.56c-0.55,0.37-0.89,0.9-1.03,1.6c-0.15,0.74-0.03,1.33,0.35,1.75
+          c0.38,0.43,1,0.79,1.85,1.08c0.61,0.23,1.02,0.45,1.22,0.68c0.21,0.23,0.27,0.55,0.18,0.96c-0.06,0.29-0.23,0.53-0.52,0.72
+          c-0.29,0.19-0.6,0.29-0.94,0.29c-0.52,0-0.93-0.11-1.26-0.33c-0.32-0.22-0.43-0.61-0.31-1.18h-1.35l-0.01,0.04
+          c-0.2,0.89-0.01,1.55,0.57,1.97c0.58,0.43,1.29,0.64,2.14,0.64c0.81,0,1.49-0.18,2.04-0.53c0.55-0.36,0.9-0.9,1.04-1.62
+          c0.15-0.75,0.04-1.34-0.31-1.76c-0.36-0.42-0.96-0.78-1.8-1.08c-0.68-0.27-1.12-0.5-1.32-0.7c-0.2-0.2-0.25-0.52-0.17-0.94
+          c0.05-0.28,0.22-0.52,0.49-0.71c0.27-0.19,0.58-0.29,0.91-0.29c0.48,0,0.84,0.14,1.08,0.41c0.24,0.28,0.32,0.64,0.23,1.09h1.35
+          l0.02-0.04c0.18-0.81,0.03-1.45-0.45-1.91C29.52,18.63,28.85,18.4,28,18.4z M38.37,18.55l-0.01-0.03h-1.76l-2.75,3.59h-0.75
+          l0.72-3.59h-1.41l-1.71,8.53h1.41l0.73-3.68h0.72l1.63,3.68h1.6l-2-4.24L38.37,18.55z"/>
+      </g>
+    </g>
+    <path fill={fill2} d="M64.48,48V19.72h4.35V48H64.48z M53.62,40.09H40.55L37.2,48h-4.35l6.95-16.41h4.35l-1.76,4.15h9.39l-6.87-16.21
+      h4.35L61.32,48h-4.35L53.62,40.09z"/>
+  </svg>
+);
+
 const Header = ({ messages, is_collapsed, set_is_collapsed }) => {
   const { settings } = React.useContext(ChatContext)
 
@@ -561,7 +593,7 @@ const ChatWidget = ({ messages, submit }) => {
         }}
         onClick={() => set_is_collapsed(false)}
       >
-        <Icon fill2={settings.icon_color} />
+        <AskAI fill2={settings.icon_color} />
       </div>
     )
   }
